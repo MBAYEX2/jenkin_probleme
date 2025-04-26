@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = 'aicha037'
+        DOCKER_USER = 'arafat2'
         BACKEND_IMAGE = "${DOCKER_USER}/appprof-frontend"
         FRONTEND_IMAGE = "${DOCKER_USER}/appprof-backend"
         MIGRATE_IMAGE = "${DOCKER_USER}/appprof-migrate"
@@ -12,7 +12,7 @@ pipeline {
         stage('Cloner le dépôt') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/Aissatou022/jenkins_git.git'
+                    url: 'https://github.com/MBAYEX2/jenkin_probleme.git'
             }
         }
 
@@ -28,7 +28,7 @@ pipeline {
 
        stage('Push des images sur Docker Hub') {
     steps {
-        withDockerRegistry([credentialsId: 'docker_cred', url: '']) {
+        withDockerRegistry([credentialsId: 'accestoken', url: '']) {
             bat "docker push %BACKEND_IMAGE%:latest"
             bat "docker push %FRONTEND_IMAGE%:latest"
             bat "docker push %MIGRATE_IMAGE%:latest"
@@ -48,16 +48,5 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            mail to: 'dieye6526@gmail.com',
-                 subject: "✅ Déploiement local réussi!",
-                 body: "L'application a été déployée localement avec succès."
-        }
-        failure {
-            mail to: 'dieye6526@gmail.com',
-                 subject: "❌ Échec du pipeline Jenkins",
-                 body: "Une erreur s'est produite, merci de vérifier Jenkins."
-        }
-    }
+   
 }
